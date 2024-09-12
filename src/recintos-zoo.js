@@ -32,25 +32,21 @@ class RecintosZoo {
         let recintosViaveis = [];
 
         for (let recinto of this.recintos) {
-            // Verificar se o bioma do recinto é compatível com o bioma do animal
             let biomaAdequado = Array.isArray(infoAnimal.bioma)
                 ? infoAnimal.bioma.some(b => recinto.bioma === b || recinto.bioma.includes(b))
                 : recinto.bioma === infoAnimal.bioma || (recinto.bioma === 'savana e rio' && infoAnimal.bioma === 'savana');
 
             if (!biomaAdequado) continue;
 
-            // Verificar se o recinto já contém carnívoros
             let recintoTemCarnivoros = Object.keys(recinto.animais).some(esp => this.animaisInfo[esp]?.carnívoro);
 
-            // Se o recinto já tem carnívoros, só pode adicionar carnívoros
             if (recintoTemCarnivoros && !infoAnimal.carnívoro) {
                 continue;
             }
 
-            // Verifica se o recinto já possui animais da mesma espécie
             let espacoExtra = Object.keys(recinto.animais).length > 0 ? 1 : 0;
             if (Object.keys(recinto.animais).some(esp => esp === animal)) {
-                espacoExtra = 0; // Não adicionar espaço extra para a mesma espécie
+                espacoExtra = 0; 
             }
 
             let espacoNecessario = quantidade * infoAnimal.tamanho;
@@ -61,7 +57,6 @@ class RecintosZoo {
 
             let espacoDisponivel = recinto.tamanhoTotal - espacoOcupado;
 
-            // Subtrai o espaço extra corretamente
             if (espacoExtra > 0) {
                 espacoDisponivel -= espacoExtra;
             }
